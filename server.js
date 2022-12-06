@@ -20,6 +20,73 @@ routeProducto.get('/listar', (req,res) => {
     res.json(productos)
 })
 
+routeProducto.post('/guardar', (req,res) => {
+    if (productos.length == 0) {
+        req.body.id = 1;
+        productos.push(req.body)
+        res.send(req.body)
+    } else {
+        req.body.id = productos[productos.length-1].id + 1;
+        productos.push(req.body)
+        res.send(req.body)
+    }
+})
+
+routeProducto.get('/:id', (req,res) => {
+    let id = req.params.id;
+    if (!isNaN(id)) {
+        if (id > productos.length) {
+            res.send("Error: Producto no encontrado")
+        } else {
+            productos.forEach(prod => {
+                if (prod.id == id) {
+                    res.send(prod)
+                }            
+            });
+        }       
+    } else {
+        res.send({ error: 'El parametro ingresado no es numerico' })
+    }
+})
+
+//Cuando se ejecuta en el postman actualiza el procuto agregándole una clave valor ( actualizado = true)
+routeProducto.put('/actualizar/:id', (req, res) => {
+    let {id} = req.params
+    if (!isNaN(id)) {
+        if (id > productos.length) {
+            res.send("Error: Producto no encontrado")
+        } else {
+            productos.forEach(prod => {
+                if (prod.id == id) {
+                    prod.actualizado = true
+                    res.send(prod)
+                }            
+            });
+        }       
+    } else {
+        res.send({ error: 'El parametro ingresado no es numerico' })
+    }
+})
+
+routeProducto.delete('/borrar/:id', (req, res) => {
+    let {id} = req.params
+    if (!isNaN(id)) {
+        if (id > productos.length) {
+            res.send("Error: Producto no encontrado")
+        } else {
+           productos.forEach(product => {
+              if (product.id == id) {
+                new_id = id;
+              }
+           });
+            let borrado = productos.splice(new_id , 1)
+           res.send(`Se borro este producto : ${borrado.title} del siguiente id ${borrado.id}`)
+        }       
+    } else {
+        res.send({ error: 'El parametro ingresado no es numerico' })
+    }
+})
+
 
 const PORT = 8080;
 
