@@ -24,11 +24,11 @@ routeProducto.post('/guardar', (req,res) => {
     if (productos.length == 0) {
         req.body.id = 1;
         productos.push(req.body)
-        res.send(req.body)
+        res.json(req.body)
     } else {
         req.body.id = productos[productos.length-1].id + 1;
         productos.push(req.body)
-        res.send(req.body)
+        res.json(req.body)
     }
 })
 
@@ -40,7 +40,7 @@ routeProducto.get('/:id', (req,res) => {
         } else {
             productos.forEach(prod => {
                 if (prod.id == id) {
-                    res.send(prod)
+                    res.json(prod)
                 }            
             });
         }       
@@ -59,7 +59,7 @@ routeProducto.put('/actualizar/:id', (req, res) => {
             productos.forEach(prod => {
                 if (prod.id == id) {
                     prod.actualizado = true
-                    res.send(prod)
+                    res.json(prod)
                 }            
             });
         }       
@@ -83,7 +83,7 @@ routeProducto.delete('/borrar/:id', (req, res) => {
               }
            });
            productos = new_product
-           res.send(productos)
+           res.json(productos)
         }       
     } else {
         res.send({ error: 'El parametro ingresado no es numerico' })
