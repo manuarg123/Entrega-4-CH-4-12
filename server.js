@@ -68,19 +68,22 @@ routeProducto.put('/actualizar/:id', (req, res) => {
     }
 })
 
+//Probar con postman. Borra el producto según el id ingresado y modifica el array de productos que quedan solo con los no borrados. 
+// el res.send muestra estos productos sin el borrado
 routeProducto.delete('/borrar/:id', (req, res) => {
     let {id} = req.params
     if (!isNaN(id)) {
         if (id > productos.length) {
             res.send("Error: Producto no encontrado")
         } else {
+           let new_product = [];
            productos.forEach(product => {
-              if (product.id == id) {
-                new_id = id;
+              if (product.id != id) {
+                new_product.push(product);
               }
            });
-            let borrado = productos.splice(new_id , 1)
-           res.send(`Se borro este producto : ${borrado.title} del siguiente id ${borrado.id}`)
+           productos = new_product
+           res.send(productos)
         }       
     } else {
         res.send({ error: 'El parametro ingresado no es numerico' })
